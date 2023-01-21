@@ -30,7 +30,7 @@
 .homePage {
   position: relative;
   padding-top: 170px;
-  padding: screen;
+  padding: 50px;
   background-image: url('https://img.freepik.com/foto-gratis/escritorio-plano-laico-laptop-gafas_23-2148284275.jpg?w=2000');
   background-repeat: no-repeat;
   background-size: cover;
@@ -71,7 +71,7 @@ body {
 
 .zap {
   position: relative;
-  bottom: 90px
+  top: 30px
 }
 
 .zap2 {
