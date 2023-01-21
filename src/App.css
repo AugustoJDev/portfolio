@@ -1,16 +1,6 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  background-color: #e6e9e8;
 }
 
 .App-header {
@@ -24,15 +14,106 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.arrowDown {
+  animation: arrowDown 1s ease-in infinite;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes arrowDown {
+  0% {
+    transform: translateY(0px);
   }
-  to {
-    transform: rotate(360deg);
+  25% {
+    transform: translateY(-20px);
   }
+  50% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.homePage {
+  padding-top: 170px;
+  padding: screen;
+  background-image: url('https://img.freepik.com/foto-gratis/escritorio-plano-laico-laptop-gafas_23-2148284275.jpg?w=2000');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@font-face {
+  font-family: CaviarDreams;
+  src: url('./fonts/CaviarDreams_Bold.ttf');
+}
+
+.homeMessage {
+  font-family: CaviarDreams;
+  font-size: 55px;
+  color:#000000;
+  padding-top: 180px;
+}
+
+.homeParagraph {
+  color:#000000;
+}
+
+.area1 {
+  visibility: hidden;
+}
+
+body {
+  background-color: #e6e9e8;
+}
+
+.github {
+  position: relative;
+  top: 150px;
+}
+
+.instagram {
+  position: relative;
+}
+
+.zap {
+  position: relative;
+  bottom: 90px
+}
+
+.zap2 {
+  position: relative;
+  top: 80px;
+}
+
+.jdev-icon {
+  width: 180px;
+}
+
+.aboutme-title {
+  position: inherit;
+  font-family: CaviarDreams;
+  font-size: 55px;
+  color:#000000;
+}
+
+.LS {
+  border-color: #000000;
+}
+
+.userIcon {
+  padding-top: 10px;
+}
+
+footer {
+  background-color: #000000;
+  color: #e6e9e8;
+  height: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  padding: 25px 0;
+
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
