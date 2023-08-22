@@ -1,0 +1,182 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="css/member.css" type="text/css">
+<style type="text/css" id="operaUserStyle"></style></head>
+
+<body>
+    <footer class="footer">
+        <button class="logout-button" id="logoutButton">Logout</button>
+    </footer>
+    
+    <h1>Bem-vindo ao painel de usuário: 
+Junior</h1>
+    <button type="button" class="createBtn" onclick="createProducts();">Criar Produto</button><br>
+    <table>
+        <tbody><tr>
+            <td>
+                <form onsubmit="event.preventDefault();onFormSubmit();" autocomplete="off">
+                    <div>
+                        <label><strong>Nome do Cliente</strong></label><label class="validation-error hide" id="nameValidationError-name">Esse campo é obrigatório.</label>
+                        <input type="text" name="name" id="name">
+                    </div>
+                    <div>
+                        <label><strong>Contato</strong></label><label class="validation-error hide" id="nameValidationError-contact">Esse campo é obrigatório.</label>
+                        <input type="text" name="contact" id="contact">
+                    </div>
+                    <div>
+                        <label><strong>Data de Entrega</strong></label><label class="validation-error hide" id="nameValidationError-delivery">Esse campo é obrigatório.</label>
+                        <input type="date" class="date-input" name="delivery" id="delivery">
+                    </div>
+                    <div>
+                        <label><strong>Valor</strong></label><label class="validation-error hide" id="nameValidationError-value">Esse campo é obrigatório.</label>
+                        <input type="text" name="value" id="value">
+                    </div>
+                    <div id="buttonContainer">
+                        <div class="frame" id="prodButton" onclick="addProducts();">
+                            <button class="configs-btn btn-1">Produtos</button>
+                        </div>
+                        <div id="seeButton" title="See all products addeds" onclick="seeProducts();">
+                            <img src="https://img.icons8.com/?size=45&amp;id=986&amp;format=png">
+                        </div>
+                    </div>
+                    <div class="form-action-buttons">
+                        <input type="submit" value="Submit">
+                    </div>
+                </form>
+            </td>
+            <td>
+                <table class="list" id="employeeList">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Contato</th>
+                            <th>Entrega</th>
+                            <th>Valor</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr><td>Jonathan</td><td>00000000000</td><td>2023-07-20</td><td>10.00</td><td><a onclick="onEdit(this)"><button class="edit">Editar</button></a>
+                       <a onclick="onDelete(this)"><button class="delete">Deletar</button></a>
+                       <a onclick="onProducts(this)"><button class="products">Produtos</button></a></td></tr><tr><td>Junior Miyagui</td><td>00000000000</td><td>2023-07-20</td><td>20.00</td><td><a onclick="onEdit(this)"><button class="edit">Editar</button></a>
+                       <a onclick="onDelete(this)"><button class="delete">Deletar</button></a>
+                       <a onclick="onProducts(this)"><button class="products">Produtos</button></a></td></tr></tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody></table>
+
+    <script src="js/manager.js"></script>
+    <script src="js/utilities/modalManager.js"></script>
+
+    <div class="modal fade" id="prodModal" role="dialog" hidden="">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="addProducts();">×</button>
+                    <h4 class="modal-title">Adicionar Produtos</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="fetched-data">
+                        <div class="selectItem">
+                            <label class="menu-items">Selecione um Item:</label>
+                            <select id="menuSection" class="productsMenu"><option value="2">Teste 0cm | $0.90 UN</option><option value="3">Troféu 1ª Linha 10cm 0cm | $28.00 UN</option></select>
+                        </div>
+                        <div class="selectQuantity">
+                            <label class="item-value">Selecione a Quantidade:</label>
+                            <input type="number" min="1" name="value" id="productQuantity">
+                        </div>
+                        <div class="finalValue">
+                            <label id="labelProd">Valor Final: R$0</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="closeBtn" onclick="addProducts();" style="--c:#E95A49">Close</button>
+                    <button type="button" class="saveBtn" id="saveBtn">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="seeProducts" role="dialog" hidden="">
+        <div class="modal-dialog" role="document">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="seeProducts();">×</button>
+                <h4 class="modal-title">Seus Produtos</h4>
+            </div>
+            <div class="modal-content">
+                
+                    <table class="list" id="seeList">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Quantidade</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prodList"></tbody>
+                    </table>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="seeUserProducts" role="dialog" hidden="">
+        <div class="modal-dialog" role="document">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="onProducts();">×</button>
+                <h4 class="modal-title">Seus Produtos</h4>
+            </div>
+            <div class="modal-content">
+                
+                    <table class="list" id="seeUserList">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Quantidade</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prodUserList"></tbody>
+                    </table>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-createProduct fade" id="createProduct" role="dialog" hidden="">
+        <div class="modal-dialog" role="document">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="createProducts();">×</button>
+                <h4 class="modal-title">Crie um Produto</h4>
+            </div>
+            <div class="modal-content">
+                <div class="fetched-data">
+                    <div class="selectItem">
+                        <label class="menu-items">Nome do Item:</label>
+                        <input type="text" id="prodName">
+                    </div>
+                    <div class="selectItem">
+                        <label class="menu-items">Valor por Unidade ( Ex.: 0.70 ):</label>
+                        <input type="number" id="valuePerUnit">
+                    </div>
+                    <div class="selectItem">
+                        <label class="menu-items">Tamanho em CM ( Pode deixar em branco. Ex.: 100 ):</label>
+                        <input type="number" id="sizeInCM">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="createBtn" id="createBtnSubmit" onclick="addProd();">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/products.js"></script>
+    <script src="js/utilities/calcProd.js"></script>
+
+
+</body></html>
