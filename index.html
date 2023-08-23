@@ -26,19 +26,35 @@
             <a class="nav-link" href="#technologies">Technologies</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#social">Social Medias</a>
+            <a class="nav-link" href="https://github.com/AugustoJDev" target="_blank">GitHub</a>
           </li>
         </ul>
       </div>
     </nav>
 
       <section id="whoiam" class="container mt-5">
-        <h1>Hello World!</h1>
-        <h3>
-          My Name is <strong>Jonathan</strong><br/>
-          I'm a <span id="hobbies"></span>
-        </h3>
+        <div class="row">
+          <div class="col-md-6">
+            <h1 class="display-1">Hello World!</h1>
+            <h3>
+              My Name is <strong>Jonathan</strong><br/>
+              I'm a <span id="hobbies"></span>
+            </h3>
+            <p>
+              I'm a Back-End developer, who focuses on JavaScript and PHP languages. I've been in the area for about 5 years, and I started my career creating bots for Discord, using the discord.js library.<br/><br/>
+              
+              I've worked on real projects, such as CRUD for a design company called <a href="https://www.instagram.com/jkdesigner.mcz/" class="text-decoration-none">JK Designer</a>, where customers and the products ordered by them are managed. This project was made using PHP and MySQL, in addition to standard technologies such as HTML, CSS and JS.<br/><br/>
+
+              My "Master" language is JavaScript, in which I worked most of the time, being 3 years of Freelancer career. The projects were posted on my Instagram and GitHub, with prints and everything open source.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <img src="images/developer.png" alt="developer" class="img-fluid">
+          </div>
+        </div>
       </section>
+
+      <div style="height: 150px;"></div>
     
       <section id="projects" class="container mt-5">
         <h2 class="text-center mb-4">Back-End Projects</h2>
@@ -85,6 +101,56 @@
           </div>
         </div>
       </section>
+
+      <div style="height: 150px;"></div>
+
+      <section id="others" class="container mt-5">
+        <h2 class="text-center mb-4">Others Projects</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <img src="https://media.discordapp.net/attachments/975569408535711886/1143744403152834651/Snapinsta.app_273820253_123122080254930_465129516474969129_n_1080_1.jpg" class="card-img-top" alt="jkdesigner">
+              <div class="card-body">
+                <h5 class="card-title">Ranked Community - FreeFire Bot</h5>
+                <p class="card-text">
+                  Automated project to create tournament queues for the game FreeFire. The bot creates queues, distributes scores, defines the MVP of the match and sells seats to participate in tournaments.
+                </p>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <a href="https://www.instagram.com/p/CZ8BbsmL75L/?img_index=1" type="button" class="btn btn-outline-info" target="_blank"><i class="fas fa-search mr-2"></i> Preview</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <img src="https://cdn.discordapp.com/attachments/975569408535711886/1143743559019794513/Snapinsta.app_305858065_1513212692467223_6883084678127286005_n_1080.jpg" class="card-img-top" alt="mongodb-api">
+              <div class="card-body">
+                <h5 class="card-title">League Support - League of Legends</h5>
+                <p class="card-text">League Support is a program developed to assist players who want to facilitate tasks within the Client, including accepting queue, giving queue, and playing again.</p>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <a href="https://www.instagram.com/p/CiRowW3Oo8V/?img_index=2" type="button" class="btn btn-outline-info" target="_blank"><i class="fas fa-search mr-2"></i> Preview</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <img src="https://media.discordapp.net/attachments/975569408535711886/1143747843320975461/image.png?width=1259&height=676" class="card-img-top" alt="mongodb-api">
+              <div class="card-body">
+                <h5 class="card-title">Black Auctions - PokeCord Bot</h5>
+                <p class="card-text">
+                  My first big project. A Pokémon auction bot from Bot PokeCord, which was later shut down due to internal issues.
+                  The language was JavaScript and the database sqlite. When I find its source, I will leave it open source on my GitHub. Until then, only good memories will remain...</p>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUXbmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXA%3D" type="button" class="btn btn-outline-info" target="_blank"><i class="fas fa-search mr-2"></i> Preview</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="height: 150px;"></div>
     
       <section id="technologies" class="container mt-5">
         <h2 class="text-center mb-4">Technologies I Use</h2>
@@ -119,23 +185,24 @@
           </div>
         </div>
       </section>
+
+      <div class="category-separator"></div>
     
-      <section class="container">
-        <h2 class="text-center mb-4">Social Media</h2>
-        <div class="row">
+      <section id="social" class="container d-flex justify-content-center">
+        <div class="row text-center">
           <div class="col-md-4 mb-4">
             <a href="https://github.com/AugustoJDev" target="_blank" class="text-dark no-underline">
-              <i class="fab fa-github fa-4x mb-2"></i>
+              <i id="github" class="fab fa-github fa-4x mb-2"></i>
             </a>
           </div>
           <div class="col-md-4 mb-4">
             <a href="https://www.instagram.com/jonathanaug/" target="_blank" class="text-dark no-underline">
-              <i class="fab fa-instagram fa-4x mb-2"></i>
+              <i id="instagram" class="fab fa-instagram fa-4x mb-2"></i>
             </a>
           </div>
           <div class="col-md-4 mb-4">
             <a href="https://linkedin.com/in/jonathan-augusto-852402258/" target="_blank" class="text-dark no-underline">
-              <i class="fab fa-linkedin fa-4x mb-2"></i>
+              <i id="linkedin" class="fab fa-linkedin fa-4x mb-2"></i>
             </a>
           </div>
         </div>

@@ -43,3 +43,25 @@ function typeWrite(element, titles) {
   const titles = ["Developer", "Student", "Freelancer"];
   
   typeWrite(titleElement, titles);
+
+// Show Sections on Scroll
+
+const boxes = document.querySelectorAll('.container');
+
+function checkScroll() {
+  const triggerBottom = window.innerHeight / 1.5;
+  
+  boxes.forEach(box => {
+    const boxTop = box.getBoundingClientRect().top;
+
+    if (boxTop < triggerBottom) {
+      box.classList.add('show');
+    } else {
+      box.classList.remove('show');
+    }
+  });
+}
+
+window.addEventListener('scroll', checkScroll);
+
+checkScroll(); 
