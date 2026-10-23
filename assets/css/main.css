@@ -1273,3 +1273,92 @@ h1,h2,h3,h4,h5,h6 {
     max-height: 1px;
     overflow: hidden
 }
+
+/* ===== Timeline line grows with scroll ===== */
+.resume .resume-item {
+    border-left-color: transparent
+}
+
+.resume .resume-item::after {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent-color);
+    transform-origin: top;
+    transform: scaleY(var(--line-progress, 1));
+    transition: transform .15s linear;
+    pointer-events: none
+}
+
+/* ===== Hero CTAs ===== */
+.hero .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 22px
+}
+
+@media (min-width: 992px) {
+    .hero .hero-cta {
+        justify-content: flex-start
+    }
+}
+
+.hero .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    transition: .3s
+}
+
+.hero .hero-btn:hover {
+    background: color-mix(in srgb,var(--accent-color),transparent 80%);
+    color: #fff
+}
+
+.hero .hero-subtitle {
+    max-width: 62ch
+}
+
+/* ===== Project tags / long descriptions ===== */
+.portfolio .portfolio-content .portfolio-info .project-tags {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    opacity: .85
+}
+
+.portfolio .portfolio-content .portfolio-info p {
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 0 12px
+}
+
+/* ===== Timeline dots filled ===== */
+.resume .resume-item::before {
+    background: var(--accent-color)
+}
+
+/* ===== Links that keep the surrounding text color ===== */
+.plain-link,.plain-link:hover {
+    color: inherit;
+    text-decoration: none
+}
+
+.plain-link:hover {
+    color: var(--accent-color)
+}

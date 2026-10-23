@@ -1,40 +1,27 @@
 function carroussel() {
     const technologies = [
-        { name: "HTML", img: "assets/img/technologies/html.png" },
-        { name: "CSS", img: "assets/img/technologies/css.png" },
-        { name: "JavaScript", img: "assets/img/technologies/javascript.png" },
-        { name: "TypeScript", img: "assets/img/technologies/typescript.png", icon: "bi-filetype-tsx" },
-        { name: "Node.js", img: "assets/img/technologies/node-js.png" },
-        { name: "Express", img: "assets/img/technologies/express-js.png" },
-        { name: "NestJS", img: "assets/img/technologies/NestJS.svg", icon: "bi-diagram-3" },
-        { name: "Python", img: "assets/img/technologies/python.png" },
-        { name: "Flask", img: "assets/img/technologies/flask.png", icon: "bi-cup-hot" },
-        { name: "FastAPI", img: "assets/img/technologies/fastapi.png", icon: "bi-lightning-charge" },
-        { name: "React", img: "assets/img/technologies/react.png", icon: "bi-layers" },
-        {
-            name: "Next.js",
-            imgCandidates: [
-                "assets/img/technologies/nextjs.png",
-                "assets/img/technologies/nextjs.svg",
-                "assets/img/technologies/next-js.png",
-                "assets/img/technologies/next-js.svg",
-                "assets/img/technologies/next.png",
-                "assets/img/technologies/next.svg"
-            ],
-            icon: "bi-window"
-        },
-        { name: "Tailwind CSS", img: "assets/img/technologies/tailwind.svg", icon: "bi-palette" },
+        { name: "Conciliação Bancária", icon: "bi-bank" },
+        { name: "Contabilidade Gerencial", icon: "bi-calculator" },
+        { name: "Análise de Custos", icon: "bi-pie-chart" },
+        { name: "Fechamento Contábil", icon: "bi-journal-check" },
+        { name: "Controle Financeiro", icon: "bi-wallet2" },
+        { name: "Provisões", icon: "bi-cash-coin" },
+        { name: "Compliance", icon: "bi-shield-check" },
+        { name: "Departamento Pessoal", icon: "bi-people" },
+        { name: "Power BI", icon: "bi-bar-chart-line" },
+        { name: "Power Query", icon: "bi-funnel" },
+        { name: "Excel Avançado", icon: "bi-file-earmark-spreadsheet" },
+        { name: "Python (Pandas)", img: "assets/img/technologies/python.png", icon: "bi-cpu" },
+        { name: "SQL", icon: "bi-database" },
         { name: "PostgreSQL", img: "assets/img/technologies/postgresql.png", icon: "bi-database" },
-        { name: "MongoDB", img: "assets/img/technologies/mongodb.svg" },
-        { name: "MySQL", img: "assets/img/technologies/mysql.png" },
-        { name: "Supabase", img: "assets/img/technologies/supabase.webp", icon: "bi-cloud-check" },
-        { name: "Firebase", img: "assets/img/technologies/firebase.webp" },
-        { name: "Docker", img: "assets/img/technologies/docker.png", icon: "bi-box-seam" },
-        { name: "AWS Lambda", img: "assets/img/technologies/lambda.png", icon: "bi-cloud-lightning" },
-        { name: "Vercel", img: "assets/img/technologies/vercel.svg" },
-        { name: "Railway", img: "assets/img/technologies/railway.svg" },
-        { name: "Cloudflare", img: "assets/img/technologies/cloudflare.webp" },
-        { name: "Git", img: "assets/img/technologies/git.png" }
+        { name: "Power Automate", icon: "bi-lightning-charge" },
+        { name: "Integração de APIs", icon: "bi-diagram-3" },
+        { name: "AlterData", icon: "bi-journal-text" },
+        { name: "e-CAC", icon: "bi-building" },
+        { name: "eSocial", icon: "bi-file-earmark-check" },
+        { name: "DCTFWeb", icon: "bi-file-earmark-text" },
+        { name: "Conectividade Social", icon: "bi-link-45deg" },
+        { name: "Giss", icon: "bi-receipt" }
     ];
 
     const slideTrack = document.querySelector(".slide-track");
@@ -57,7 +44,7 @@ function carroussel() {
         const renderIconFallback = () => {
             iconWrap.innerHTML = "";
             const icon = document.createElement("i");
-            icon.className = `bi ${tech.icon ?? "bi-code-slash"}`;
+            icon.className = `bi ${tech.icon ?? "bi-graph-up"}`;
             icon.setAttribute("aria-hidden", "true");
             iconWrap.appendChild(icon);
         };

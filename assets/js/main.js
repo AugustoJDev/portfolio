@@ -218,4 +218,35 @@
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
 
+  /**
+   * Timeline lines grow downward following the scroll
+   */
+  (function timelineLines() {
+    const items = document.querySelectorAll('.resume .resume-item');
+    if (!items.length) return;
+    let ticking = false;
+
+    function update() {
+      const vh = window.innerHeight;
+      items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const progress = (vh * 0.8 - rect.top) / Math.max(rect.height, 1);
+        item.style.setProperty('--line-progress', Math.min(1, Math.max(0, progress)).toFixed(4));
+      });
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('load', update);
+  })();
+
 })();
