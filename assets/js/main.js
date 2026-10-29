@@ -11,7 +11,9 @@
     headerToggleBtn.classList.toggle('bi-list');
     headerToggleBtn.classList.toggle('bi-x');
   }
-  headerToggleBtn.addEventListener('click', headerToggle);
+  if (headerToggleBtn) {
+    headerToggleBtn.addEventListener('click', headerToggle);
+  }
 
   /**
    * Hide mobile nav on same-page/hash links
@@ -22,7 +24,6 @@
         headerToggle();
       }
     });
-
   });
 
   /**
@@ -48,25 +49,18 @@
   }
 
   /**
-   * Scroll top button
+   * Scroll top button click
    */
-  let scrollTop = document.querySelector('.scroll-top');
-
-  function toggleScrollTop() {
-    if (scrollTop) {
-      window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
-    }
-  }
-  scrollTop.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+  const scrollTop = document.querySelector('.scroll-top');
+  if (scrollTop) {
+    scrollTop.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
-  });
-
-  window.addEventListener('load', toggleScrollTop);
-  document.addEventListener('scroll', toggleScrollTop);
+  }
 
   /**
    * Animation on scroll function and init
@@ -84,11 +78,12 @@
   /**
    * Init typed.js
    */
+  let typedInstance = null;
   const selectTyped = document.querySelector('.typed');
   if (selectTyped) {
     let typed_strings = selectTyped.getAttribute('data-typed-items');
     typed_strings = typed_strings.split(',');
-    new Typed('.typed', {
+    typedInstance = new Typed('.typed', {
       strings: typed_strings,
       loop: true,
       typeSpeed: 100,
@@ -130,6 +125,12 @@
    * Init isotope layout and filters
    */
   document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
+    const filterButtons = isotopeItem.querySelectorAll('.isotope-filters li');
+    // Skip Isotope JS overhead on mobile when there are no filter buttons (Bootstrap grid handles it natively)
+    if (!filterButtons.length && window.innerWidth < 992) {
+      return;
+    }
+
     let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
     let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
     let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
@@ -144,7 +145,7 @@
       });
     });
 
-    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
+    filterButtons.forEach(function(filters) {
       filters.addEventListener('click', function() {
         isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
         this.classList.add('filter-active');
@@ -156,7 +157,6 @@
         }
       }, false);
     });
-
   });
 
   /**
@@ -197,56 +197,182 @@
   });
 
   /**
-   * Navmenu Scrollspy
+   * Pause offscreen animations & WebGL (Spline 3D, Typed.js, Tech Slider)
+   * Prevents GPU/CPU accumulation when scrolling down on mobile
    */
-  let navmenulinks = document.querySelectorAll('.navmenu a');
+  (function observeOffscreenAnimations() {
+    if (!('IntersectionObserver' in window)) return;
 
-  function navmenuScrollspy() {
-    navmenulinks.forEach(navmenulink => {
-      if (!navmenulink.hash) return;
-      let section = document.querySelector(navmenulink.hash);
-      if (!section) return;
-      let position = window.scrollY + 200;
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        document.querySelectorAll('.navmenu a.active').forEach(link => link.classList.remove('active'));
-        navmenulink.classList.add('active');
-      } else {
-        navmenulink.classList.remove('active');
-      }
-    })
-  }
-  window.addEventListener('load', navmenuScrollspy);
-  document.addEventListener('scroll', navmenuScrollspy);
+    const heroSection = document.querySelector('#hero');
+    const splineBg = document.querySelector('.hero-spline-bg');
+    const splineViewer = document.querySelector('spline-viewer');
+    const techSlider = document.querySelector('.tech-slider');
+
+    // Only enable global pointer tracking on desktop with fine pointer
+    if (splineViewer && window.matchMedia('(min-width: 1200px) and (hover: hover) and (pointer: fine)').matches) {
+      splineViewer.setAttribute('events-target', 'global');
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.target === heroSection) {
+          if (entry.isIntersecting) {
+            if (splineBg) splineBg.classList.remove('is-offscreen');
+            if (splineViewer && splineViewer._spline && typeof splineViewer._spline.play === 'function') {
+              splineViewer._spline.play();
+            }
+            if (typedInstance && typeof typedInstance.start === 'function') {
+              typedInstance.start();
+            }
+          } else {
+            if (splineBg) splineBg.classList.add('is-offscreen');
+            if (splineViewer && splineViewer._spline && typeof splineViewer._spline.stop === 'function') {
+              splineViewer._spline.stop();
+            }
+            if (typedInstance && typeof typedInstance.stop === 'function') {
+              typedInstance.stop();
+            }
+          }
+        } else if (entry.target === techSlider) {
+          if (entry.isIntersecting) {
+            techSlider.classList.remove('is-offscreen');
+          } else {
+            techSlider.classList.add('is-offscreen');
+          }
+        }
+      });
+    }, {
+      rootMargin: '100px 0px'
+    });
+
+    if (heroSection) observer.observe(heroSection);
+    if (techSlider) observer.observe(techSlider);
+  })();
 
   /**
-   * Timeline lines grow downward following the scroll
+   * Unified, zero-reflow scroll pipeline (ScrollTop + Scrollspy + Timeline lines)
+   * Caches DOM geometry outside the scroll loop to eliminate layout thrashing on mobile
    */
-  (function timelineLines() {
-    const items = document.querySelectorAll('.resume .resume-item');
-    if (!items.length) return;
-    let ticking = false;
+  (function initScrollPipeline() {
+    const navmenulinks = Array.from(document.querySelectorAll('.navmenu a'));
+    const resumeItems = Array.from(document.querySelectorAll('.resume .resume-item'));
 
-    function update() {
-      const vh = window.innerHeight;
-      items.forEach(item => {
+    let navSections = [];
+    let timelineData = [];
+    let vh = window.innerHeight;
+    let lastWindowWidth = window.innerWidth;
+    let isScrollTopActive = false;
+    let ticking = false;
+    let resizeTimer = null;
+
+    function measureLayout() {
+      const scrollY = window.scrollY;
+      vh = window.innerHeight;
+
+      navSections = navmenulinks
+        .map(link => {
+          if (!link.hash) return null;
+          const section = document.querySelector(link.hash);
+          if (!section) return null;
+          const rect = section.getBoundingClientRect();
+          return {
+            link,
+            top: rect.top + scrollY,
+            bottom: rect.top + scrollY + rect.height
+          };
+        })
+        .filter(Boolean);
+
+      timelineData = resumeItems.map(item => {
         const rect = item.getBoundingClientRect();
-        const progress = (vh * 0.8 - rect.top) / Math.max(rect.height, 1);
-        item.style.setProperty('--line-progress', Math.min(1, Math.max(0, progress)).toFixed(4));
+        return {
+          item,
+          top: rect.top + scrollY,
+          height: Math.max(rect.height, 1),
+          lastProgress: -1
+        };
       });
+    }
+
+    function updateOnScroll() {
+      const scrollY = window.scrollY;
+
+      // 1. Scroll-top button state (DOM write only on state transition)
+      if (scrollTop) {
+        const shouldBeActive = scrollY > 100;
+        if (shouldBeActive !== isScrollTopActive) {
+          isScrollTopActive = shouldBeActive;
+          scrollTop.classList.toggle('active', shouldBeActive);
+        }
+      }
+
+      // 2. Navmenu Scrollspy using cached section bounds
+      const spyPos = scrollY + 200;
+      for (let i = 0; i < navSections.length; i++) {
+        const entry = navSections[i];
+        const isActive = spyPos >= entry.top && spyPos <= entry.bottom;
+        if (isActive) {
+          if (!entry.link.classList.contains('active')) {
+            navmenulinks.forEach(l => l.classList.remove('active'));
+            entry.link.classList.add('active');
+          }
+        } else if (entry.link.classList.contains('active')) {
+          entry.link.classList.remove('active');
+        }
+      }
+
+      // 3. Timeline lines progress (DOM write only when clamped value changes)
+      const triggerY = scrollY + vh * 0.8;
+      for (let i = 0; i < timelineData.length; i++) {
+        const data = timelineData[i];
+        const rawProgress = (triggerY - data.top) / data.height;
+        const clamped = Math.min(1, Math.max(0, rawProgress));
+        const rounded = Math.round(clamped * 1000) / 1000;
+        if (rounded !== data.lastProgress) {
+          data.lastProgress = rounded;
+          data.item.style.setProperty('--line-progress', rounded.toString());
+        }
+      }
+
       ticking = false;
     }
 
     function onScroll() {
       if (!ticking) {
         ticking = true;
-        window.requestAnimationFrame(update);
+        window.requestAnimationFrame(updateOnScroll);
       }
     }
 
-    update();
+    function onResize() {
+      vh = window.innerHeight;
+      // Ignore mobile URL bar height-only resize jitter; only re-measure DOM on width change
+      if (window.innerWidth !== lastWindowWidth) {
+        lastWindowWidth = window.innerWidth;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          measureLayout();
+          onScroll();
+        }, 150);
+      } else {
+        onScroll();
+      }
+    }
+
+    measureLayout();
+    updateOnScroll();
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    window.addEventListener('load', update);
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('load', () => {
+      measureLayout();
+      updateOnScroll();
+      // Re-measure once lazy/AOS elements settle
+      setTimeout(() => {
+        measureLayout();
+        updateOnScroll();
+      }, 800);
+    });
   })();
 
 })();
